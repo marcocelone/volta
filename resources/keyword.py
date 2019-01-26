@@ -20,8 +20,6 @@ class Keyword(Resource):
     def post(self):
         data = Keyword.parser.parse_args()
         keyword = data['keyword']
-        if len(keyword) !=3:
-            return  {'message': "Please enter a 3 word string"}, 400
 
         if KeywordModel.find_by_keyword(data['keyword']):
             return {'message': "Keyword already exist!"}, 400
