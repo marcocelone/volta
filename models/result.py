@@ -5,18 +5,24 @@ class ResultModel(db.Model):
     __tablename__ = 'results'
 
     id = db.Column(db.Integer, primary_key=True)
-    keyword = db.Column(db.String(80))
-    number = db.Column(db.Integer)
+    keyword = db.Column(db.String(80), nullable=False)
+    number = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    result = db.relationship('UserModel')
+    user = db.relationship('UserModel')
 
-    def __init__(self, keyword, number):
+    def __init__(self, keyword, number, user_id):
         self.keyword = keyword
         self.number = number
+        self.user_id = user_id
 
     def json(self):
-        return {'keyword': self.keyword,'number': self.number}
+        return {
+            'id': self.id,
+            'keyword': self.keyword,
+            'number': self.number,
+            'user_id': self.user_id
+        }
 
     @classmethod
     def find_results(cls, keyword, number):
